@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regulator — Compliance Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="app">
+  <div class="sidebar">
+    <div class="sidebar-logo">Regulator<span>.</span></div>
+    <div class="sidebar-nav">
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Overview</div>
+        <button class="sb-item active" onclick="showScreen('dashboard')"><span class="sb-icon" style="background:var(--accent-soft);color:var(--accent)">&#9673;</span>Dashboard<span class="sb-badge" id="dash-badge">3</span></button>
+        <button class="sb-item"><span class="sb-icon" style="background:var(--warm-soft);color:var(--warm)">&#9889;</span>Change Feed</button>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Clients</div>
+        <button class="sb-item" onclick="showScreen('client')"><span class="sb-icon" style="background:var(--warm-soft);color:var(--warm)">A</span>Apex Trading<span class="sb-badge">2</span></button>
+        <button class="sb-item"><span class="sb-icon" style="background:var(--green-soft);color:var(--green)">M</span>Meridian Capital</button>
+        <button class="sb-item"><span class="sb-icon" style="background:var(--bg2);color:var(--text3)">S</span>Straits Logistics</button>
+      </div>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-av">RT</div>
+      <div><div class="user-name">Rachel Tan</div><div class="user-role">Senior QI</div></div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="breadcrumb" id="bc"><span>Dashboard</span></div>
+      <div id="topbar-right"><button class="topbar-btn outline" style="font-size:.68rem;color:var(--text4)" id="clock"></button></div>
+    </div>
+    <div class="content" id="content">
+
+      <!-- DASHBOARD -->
+      <div class="screen visible" id="screen-dashboard">
+        <div class="dash-stats" id="dash-stats"></div>
+        <div class="sh"><div class="sh-t">Filings Due Soon</div><span class="sh-link">View all &rarr;</span></div>
+        <table class="ct">
+          <thead><tr><th>Client</th><th>Filing</th><th>Deadline</th><th>Status</th><th>Alerts</th></tr></thead>
+          <tbody id="filings-table"></tbody>
+        </table>
+      </div>
+
+      <!-- CLIENT -->
+      <div class="screen" id="screen-client">
+        <div class="ch">
+          <div><h2 id="client-name"></h2><p id="client-meta"></p></div>
+          <div class="cm" id="client-metrics"></div>
+        </div>
+        <div class="steps-bar" id="sbar">
+          <div class="si active" id="si1"><span class="sn">01</span>Changes</div>
+          <div class="si" id="si2"><span class="sn">02</span>Upload</div>
+          <div class="si" id="si3"><span class="sn">03</span>Review</div>
+          <div class="si" id="si4"><span class="sn">04</span>Auto-Fill</div>
+          <div class="si" id="si5"><span class="sn">05</span>Done</div>
+        </div>
+
+        <!-- P1: Changes -->
+        <div id="p1">
+          <div class="cf">
+            <div class="cf-h"><span>Changes since last filing</span><span id="changes-verified" style="font-size:.68rem;color:var(--green)"></span></div>
+            <div id="changes-feed"></div>
+          </div>
+          <div class="hint">
+            <span></span>
+            <button class="topbar-btn primary" onclick="goP(2)">Continue to Upload &rarr;</button>
+          </div>
+        </div>
+
+        <!-- P2: Upload -->
+        <div id="p2" style="display:none">
+          <div class="upload-area" id="uz">
+            <h3>Drop client documents here</h3>
+            <p>PDF, XLSX, JPG — auto-extraction on upload</p>
+            <input type="file" id="file-input" multiple style="display:none" accept=".pdf,.xlsx,.xls,.jpg,.jpeg,.png">
+          </div>
+          <div class="ufiles" id="ufiles"></div>
+          <div id="uact" style="display:none" class="hint">
+            <span></span>
+            <button class="topbar-btn primary" onclick="goP(3)">Continue to Review &rarr;</button>
+          </div>
+        </div>
+
+        <!-- P3: Review -->
+        <div id="p3" style="display:none">
+          <div class="fp">
+            <div class="fp-h"><span>Pre-populated Draft</span><span id="fields-count" style="font-size:.65rem;color:var(--green)"></span></div>
+            <div id="review-fields"></div>
+          </div>
+          <div id="review-flags"></div>
+          <div class="hint">
+            <span></span>
+            <button class="topbar-btn tf-btn" id="fill-btn" onclick="goP(4)" style="opacity:.4;pointer-events:none">&#128031; Auto-Fill BizFile+ with Tinyfish &rarr;</button>
+          </div>
+        </div>
+
+        <!-- P4: BizFile+ Auto-Fill -->
+        <div id="p4" style="display:none">
+          <div class="bizfile-wrapper">
+            <div class="browser-frame">
+              <div class="browser-bar">
+                <div class="bb-dots"><span class="bb-dot bb-r"></span><span class="bb-dot bb-y"></span><span class="bb-dot bb-g"></span></div>
+                <div class="bb-url"><span class="lock">&#128274;</span> www.bizfile.gov.sg/ngbbizfileinternet/faces/oracle/webcenter/portalapp/ar</div>
+              </div>
+              <div class="browser-body">
+                <div class="biz">
+                  <div class="biz-header"><div class="biz-logo">&#127963; BizFile+</div><div class="biz-user">Rachel Tan &middot; CorpPass</div></div>
+                  <div class="biz-nav"><a href="#">Home</a><a href="#">My Submissions</a><a class="active" href="#">File Annual Return</a><a href="#">Help</a></div>
+                  <div class="biz-content" id="bizfile-form"></div>
+                </div>
+              </div>
+            </div>
+            <div class="agent-panel">
+              <div class="agent-header"><div class="tf-dot"></div><span>Tinyfish Agent</span></div>
+              <div class="agent-log" id="agent-log"></div>
+              <div class="agent-status" id="agent-status">
+                <div class="as-row"><div class="spinner"></div><span style="font-size:.72rem;color:var(--text3)">Waiting...</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- P5: Done -->
+        <div id="p5" style="display:none">
+          <div class="sum" id="summary"></div>
+          <div style="margin-top:1rem;display:flex;gap:.5rem;justify-content:center">
+            <button class="topbar-btn primary" onclick="showScreen('dashboard')">Back to Dashboard</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="timer" id="timer" style="display:none">
+  <div class="timer-dot"></div>
+  <div><div class="timer-l">Elapsed</div><div class="timer-v" id="tv">0:00</div></div>
+</div>
+
+<script src="/js/app.js"></script>
+<script src="/js/dashboard.js"></script>
+<script src="/js/client.js"></script>
+<script src="/js/upload.js"></script>
+<script src="/js/review.js"></script>
+<script src="/js/autofill.js"></script>
+</body>
+</html>

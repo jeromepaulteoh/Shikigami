@@ -1,0 +1,20 @@
+{
+  "name": "regulator",
+  "version": "1.0.0",
+  "description": "Regulatory compliance platform with Tinyfish auto-fill integration",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node --watch backend/server.js",
+    "scrape": "node backend/scripts/scrape.js",
+    "monitor": "node backend/scripts/monitor.js"
+  },
+  "dependencies": {
+    "@tiny-fish/sdk": "^1.0.0",
+    "better-sqlite3": "^11.7.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "multer": "^1.4.5-lts.1"
+  }
+}
