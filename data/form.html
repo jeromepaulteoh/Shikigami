@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BizFile+ - Enter Lodgement Details</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --teal:#1e6070;--teal-light:#2c7a87;--orange:#c95200;
+  --bg:#f0ede8;--white:#fff;--gray-border:#ddd;--gray-text:#666;--dark:#2a2a2a;
+  --font:'IBM Plex Sans',Arial,sans-serif;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--dark);font-size:14px;}
+
+.site-hdr{background:#fff;padding:11px 50px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e5e5e5;}
+.logo-wrap{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-txt{font-size:21px;font-weight:700;font-style:italic;}
+.logo-txt .biz{color:var(--orange);}
+.logo-txt .plus{color:#333;font-style:normal;}
+.logo-sub{font-size:11px;color:#777;}
+.hdr-acts{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--teal);}
+.hdr-acts span{cursor:pointer;}
+
+.nav{background:var(--teal);display:flex;align-items:center;padding:0 50px;}
+.nav-it{padding:11px 13px;font-size:13px;color:#fff;cursor:pointer;white-space:nowrap;}
+.nav-it:hover{background:rgba(255,255,255,0.12);}
+.nav-sep-v{color:rgba(255,255,255,0.3);padding:0 4px;}
+
+.bc{padding:11px 50px;font-size:13px;color:#999;}
+.bc a{color:var(--teal-light);text-decoration:none;}
+.bc a:hover{text-decoration:underline;}
+.bc .arr{margin:0 6px;font-size:11px;}
+
+.pg-title{padding:6px 50px 18px;font-size:26px;font-weight:700;color:var(--dark);line-height:1.2;}
+
+/* STEPPER */
+.stepper-area{padding:0 50px 4px;}
+.stepper{display:flex;align-items:flex-start;max-width:560px;}
+.st-item{display:flex;flex-direction:column;align-items:center;flex:0 0 auto;}
+.st-circle{width:32px;height:32px;border-radius:50%;border:2px solid #ccc;background:#fff;color:#aaa;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:5px;}
+.st-item.active .st-circle{background:var(--teal);border-color:var(--teal);color:#fff;}
+.st-item.done .st-circle{background:var(--teal);border-color:var(--teal);color:#fff;}
+.st-lbl{font-size:11px;color:#999;text-align:center;max-width:90px;line-height:1.3;}
+.st-item.active .st-lbl{color:#333;font-weight:600;}
+.st-item.done .st-lbl{color:var(--teal);}
+.st-line{flex:1;height:1px;background:#ccc;margin-top:16px;min-width:50px;}
+
+.cont{padding:16px 50px 40px;}
+
+.card{background:#fff;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,0.07);margin-bottom:20px;}
+.card-body{padding:28px 32px 32px;}
+
+.sec-title{font-size:15px;font-weight:600;color:var(--dark);margin:20px 0 11px;padding-bottom:8px;border-bottom:1px solid #eee;}
+.sec-title:first-child{margin-top:0;}
+
+.form-title-main{font-size:19px;font-weight:600;color:var(--dark);margin-bottom:4px;}
+.form-sub-main{font-size:13px;color:#888;margin-bottom:20px;}
+
+.ent-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:6px 0 4px;}
+.ef-lbl{font-size:11px;color:#aaa;margin-bottom:3px;}
+.ef-val{font-size:14px;color:#333;}
+
+.form-half{max-width:400px;}
+.ff{margin-bottom:17px;}
+.ff label{display:block;font-size:12px;color:#777;margin-bottom:5px;}
+.fi{width:100%;padding:10px 12px;border:1px solid #ccc;border-radius:5px;font-size:14px;font-family:inherit;color:#333;}
+.fi:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 2px rgba(30,96,112,0.1);}
+textarea.fi{min-height:85px;resize:vertical;}
+.cc{text-align:right;font-size:11px;color:#bbb;margin-top:3px;}
+.date-w{position:relative;}
+.date-w .cal-ic{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#999;pointer-events:none;}
+
+/* UPLOAD */
+.sup-layout{display:flex;gap:26px;}
+.sup-instr{flex:0 0 195px;font-size:12.5px;color:#888;line-height:1.65;}
+.sup-uploads{flex:1;}
+.up-lbl{font-size:12px;color:#999;margin-bottom:7px;display:block;}
+.upz{border:2px dashed #ccc;border-radius:6px;padding:20px;text-align:center;background:#fafafa;cursor:pointer;position:relative;margin-bottom:12px;transition:all 0.15s;}
+.upz:hover{border-color:var(--teal);background:#f0f8fa;}
+.upz input[type="file"]{opacity:0;position:absolute;inset:0;width:100%;height:100%;cursor:pointer;}
+.upz-icon{font-size:26px;color:#bbb;margin-bottom:6px;}
+.upz-svg-icon{margin-bottom:10px;display:flex;justify-content:center;align-items:center;}
+.upz-svg-icon svg{display:block;}
+.upz.uploaded{border-color:#ccc;background:#fafafa;}
+.upz-thumbs{font-size:38px;margin-bottom:10px;line-height:1;}
+.upz-main{font-size:13px;color:#444;}
+.upz-main a{color:var(--teal-light);}
+.upz-sub{font-size:11.5px;color:#999;margin-top:4px;line-height:1.6;}
+
+.file-card{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #ddd;border-radius:5px;padding:9px 13px;margin-top:6px;font-size:13px;}
+.fc-ic{color:var(--teal);font-size:14px;}
+.fc-info{flex:1;}
+.fc-name{color:var(--teal-light);font-weight:500;}
+.fc-meta{font-size:11px;color:#bbb;margin-top:2px;}
+.fc-del{background:none;border:none;color:#ccc;cursor:pointer;font-size:17px;}
+.fc-del:hover{color:#e05555;}
+
+.f-actions{display:flex;justify-content:space-between;align-items:center;padding-top:18px;border-top:1px solid #eee;margin-top:8px;}
+.btn-grp{display:flex;gap:10px;}
+.btn{padding:10px 22px;border-radius:25px;font-size:13.5px;cursor:pointer;border:1.5px solid transparent;font-family:inherit;font-weight:500;text-decoration:none;display:inline-block;}
+.btn-ol{background:#fff;border-color:var(--teal);color:var(--teal);}
+.btn-ol:hover{background:#f0f8fa;}
+.btn-pr{background:var(--teal);color:#fff;border-color:var(--teal);}
+.btn-pr:hover{background:#164d5c;}
+
+.footer{background:#2a2a2a;color:#bbb;padding:28px 50px 14px;margin-top:35px;}
+.ft-main{display:flex;justify-content:center;align-items:flex-start;gap:65px;padding-bottom:18px;}
+.ft-acra .acra-logo{font-size:18px;font-weight:900;letter-spacing:2px;color:#aaa;border:2px solid #666;display:inline-block;padding:4px 9px;margin-bottom:4px;}
+.ft-acra .acra-name{font-size:10px;color:#888;max-width:130px;line-height:1.4;text-align:center;}
+.ft-lnks{display:flex;gap:45px;}
+.ft-col a{display:flex;align-items:center;gap:6px;color:#bbb;text-decoration:none;font-size:13px;margin-bottom:9px;cursor:pointer;}
+.ft-col a:hover{color:#fff;}
+.ft-bot{border-top:1px solid #444;padding-top:11px;display:flex;justify-content:space-between;font-size:11.5px;color:#777;}
+.ft-bot-lnks{display:flex;gap:18px;}
+.ft-bot-lnks a{color:#777;text-decoration:none;cursor:pointer;}
+
+.chat-widget{position:fixed;bottom:22px;right:22px;z-index:999;}
+.chat-bubble{background:#d35400;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,0.3);}
+.chat-tooltip{background:#fff;border:1px solid #eee;border-radius:8px;padding:8px 12px;font-size:12px;color:#333;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,0.12);white-space:nowrap;position:relative;}
+.chat-tooltip::after{content:'';position:absolute;bottom:-5px;right:16px;width:10px;height:10px;background:#fff;border-right:1px solid #eee;border-bottom:1px solid #eee;transform:rotate(45deg);}
+</style>
+</head>
+<body>
+
+<div class="site-hdr">
+  <a class="logo-wrap" href="index.html">
+    <div class="logo-txt"><span class="biz">bizfile</span><span class="plus">+</span></div>
+    <div class="logo-sub">Making Singapore the best place for business</div>
+  </a>
+  <div class="hdr-acts">
+    <span>👤 Account ▾</span><span>✉</span><span>🛒</span>
+    <span style="color:#ddd;">|</span><span>→ Logout</span><span>🔍</span>
+  </div>
+</div>
+
+<div class="nav">
+  <span class="nav-it">Register ▾</span><span class="nav-it">Manage ▾</span>
+  <span class="nav-it">Annual filing ▾</span><span class="nav-it">Deregister ▾</span>
+  <span class="nav-it">Others ▾</span><span class="nav-sep-v">|</span>
+  <span class="nav-it">Buy information ▾</span><span class="nav-it">Subscribe APIs ▾</span>
+</div>
+
+<div class="bc">
+  <a href="index.html">Home</a>
+  <span class="arr">›</span>
+  <a href="intermediary.html">General lodgement</a>
+</div>
+
+<div class="pg-title">Update registered qualified<br>individual information</div>
+
+<div class="stepper-area">
+  <div class="stepper">
+    <div class="st-item active">
+      <div class="st-circle">1</div>
+      <div class="st-lbl">Enter General lodgement details</div>
+    </div>
+    <div class="st-line"></div>
+    <div class="st-item">
+      <div class="st-circle">2</div>
+      <div class="st-lbl">Review and confirm</div>
+    </div>
+    <div class="st-line"></div>
+    <div class="st-item">
+      <div class="st-circle">3</div>
+      <div class="st-lbl">Complete</div>
+    </div>
+  </div>
+</div>
+
+<div class="cont">
+  <div class="card">
+    <div class="card-body">
+      <div class="form-title-main">Enter general lodgement information</div>
+      <div class="form-sub-main">This eService allows you to file transactions that are not listed in the Bizfile menu, through general lodgement.</div>
+
+      <div class="sec-title">Entity information</div>
+      <div class="ent-row">
+        <div><div class="ef-lbl">UEN</div><div class="ef-val" id="uen">N/A</div></div>
+        <div><div class="ef-lbl">Entity name</div><div class="ef-val" id="entity-name">N/A</div></div>
+        <div><div class="ef-lbl">Entity type</div><div class="ef-val" id="entity-type">N/A</div></div>
+        <div><div class="ef-lbl">Company type</div><div class="ef-val" id="company-type">N/A</div></div>
+      </div>
+
+      <div class="sec-title">General lodgement</div>
+      <div style="margin-bottom:14px;">
+        <div class="ef-lbl">Date of lodgement</div>
+        <div class="ef-val">28 Mar 2026</div>
+      </div>
+
+      <div class="form-half">
+        <div class="ff">
+          <label for="f-email">Email address</label>
+          <input type="email" id="f-email" class="fi" placeholder="Jerometeoh@gmail.com">
+        </div>
+        <div class="ff">
+          <label for="f-desc">Description of lodgement</label>
+          <textarea id="f-desc" class="fi" oninput="updateCC(this)"></textarea>
+          <div class="cc"><span id="cc-num">0</span>/200</div>
+        </div>
+        <div class="ff">
+          <label for="f-date">Date of document</label>
+          <div class="date-w">
+            <input type="text" id="f-date" class="fi" value="11 Mar 2026" placeholder="DD MMM YYYY">
+            <span class="cal-ic">📅</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec-title">Supporting document</div>
+      <div class="sup-layout">
+        <div class="sup-instr">
+          Download the PDF form available on the instruction page. Complete and upload the PDF form as part of your submission. Your lodgement may be rejected if you fail to include the completed form.
+        </div>
+        <div class="sup-uploads">
+
+          <!-- ATTACH FORM UPLOAD ZONE -->
+          <span class="up-lbl">Attach form</span>
+          <div class="upz" id="form-upz">
+            <input type="file" accept=".pdf" id="form-file-in" onchange="handleFile('form-file-in','form-file-card','form-upz','form-icon','form-sub',1)">
+            <!-- Icon: changes between arrow (empty) and thumbs up (uploaded) -->
+            <div id="form-icon" class="upz-svg-icon">
+              <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="17" y="24" width="8" height="12" rx="1" fill="#7bbccc"/>
+                <polygon points="21,4 7,22 15,22 15,36 27,36 27,22 35,22" fill="#7bbccc"/>
+                <rect x="7" y="34" width="28" height="3" rx="1.5" fill="#7bbccc"/>
+              </svg>
+            </div>
+            <div class="upz-main">Drag and drop files here or <a>browse files</a> to upload</div>
+            <div id="form-sub" class="upz-sub">
+              Supported formats: PDF<br>
+              Maximum file size: 3MB per file<br>
+              Embedded images and files will not be scanned for personal information. Consider masking any sensitive personal information before uploading, as it could be part of records accessible to the public.<br>
+              <em>You may upload up to 1 file(s)</em>
+            </div>
+          </div>
+          <div id="form-file-card" style="display:none;"></div>
+
+          <!-- ATTACH SUPPORTING DOCUMENT UPLOAD ZONE -->
+          <span class="up-lbl" style="margin-top:14px;display:block;">Attach supporting document</span>
+          <div class="upz" id="supp-upz">
+            <input type="file" accept=".pdf" id="supp-file-in" onchange="handleFile('supp-file-in','supp-file-card','supp-upz','supp-icon','supp-sub',20)">
+            <div id="supp-icon" class="upz-svg-icon">
+              <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="17" y="24" width="8" height="12" rx="1" fill="#7bbccc"/>
+                <polygon points="21,4 7,22 15,22 15,36 27,36 27,22 35,22" fill="#7bbccc"/>
+                <rect x="7" y="34" width="28" height="3" rx="1.5" fill="#7bbccc"/>
+              </svg>
+            </div>
+            <div class="upz-main">Drag and drop files here or <a>browse files</a> to upload</div>
+            <div id="supp-sub" class="upz-sub">
+              Supported formats: PDF<br>
+              Maximum file size: 2MB per file<br>
+              Embedded images and files will not be scanned for personal information. Consider masking any sensitive personal information before uploading, as it could be part of records accessible to the public.<br>
+              <em>You may upload up to 20 file(s)</em>
+            </div>
+          </div>
+          <div id="supp-file-card" style="display:none;"></div>
+
+        </div>
+      </div>
+
+      <div class="f-actions">
+        <a class="btn btn-ol" href="intermediary.html">← Back</a>
+        <div class="btn-grp">
+          <button class="btn btn-ol" onclick="saveDraft()">Save draft</button>
+          <button class="btn btn-pr" onclick="goReview()">Review and confirm →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="ft-main">
+    <div class="ft-acra"><div class="acra-logo">ACRA</div><div class="acra-name">Accounting and Corporate Regulatory Authority</div></div>
+    <div class="ft-lnks">
+      <div class="ft-col"><a>ℹ About Us</a><a>💬 Feedback</a></div>
+      <div class="ft-col"><a>📰 News Room</a><a>📞 Contact Us</a></div>
+      <div class="ft-col"><a>📖 Guides</a></div>
+    </div>
+  </div>
+  <div class="ft-bot">
+    <div class="ft-bot-lnks"><a>Report vulnerability</a><a>Privacy statement</a><a>Terms of use</a><a>Sitemap</a></div>
+    <div>© 2026 Government of Singapore &nbsp;|&nbsp; Last updated on 17 Mar 2026</div>
+  </div>
+</div>
+
+<div class="chat-widget">
+  <div class="chat-tooltip">Click here to chat with me.</div>
+  <div class="chat-bubble">😊</div>
+</div>
+
+<script>
+// Restore any previously saved draft
+window.onload = function(){
+  const email = sessionStorage.getItem('form_email');
+  const desc  = sessionStorage.getItem('form_desc');
+  const date  = sessionStorage.getItem('form_date');
+  if(email) document.getElementById('f-email').value = email;
+  if(desc)  { document.getElementById('f-desc').value = desc; updateCC(document.getElementById('f-desc')); }
+  if(date)  document.getElementById('f-date').value = date;
+};
+
+function updateCC(el){
+  document.getElementById('cc-num').textContent = el.value.length;
+}
+
+function handleFile(inputId, cardId, zoneId, iconId, subId, maxFiles){
+  const file = document.getElementById(inputId).files[0];
+  if(!file) return;
+  const sz = (file.size / 1024).toFixed(1) + ' KB';
+
+  // Swap icon to thumbs up
+  document.getElementById(iconId).innerHTML = '<div class="upz-thumbs">👍</div>';
+
+  // Update subtext to "reached maximum" state
+  const maxLine = maxFiles === 1
+    ? 'You have reached the maximum upload limit of 1 file(s)'
+    : `You may upload up to ${maxFiles} file(s)`;
+  document.getElementById(subId).innerHTML =
+    `${maxLine}<br>Supported formats: PDF &nbsp;|&nbsp; Maximum file size: ${maxFiles===1?'3':'2'}MB per file<br>
+    Embedded images and files will not be scanned for personal information.`;
+
+  // Show file card below the zone
+  const card = document.getElementById(cardId);
+  card.innerHTML = `
+    <div class="file-card">
+      <span class="fc-ic">📄</span>
+      <div class="fc-info">
+        <div class="fc-name">${file.name}</div>
+        <div class="fc-meta">Uploaded &bull; ${sz}</div>
+      </div>
+      <button class="fc-del" onclick="removeFile('${inputId}','${cardId}','${iconId}','${subId}',${maxFiles})">🗑</button>
+    </div>`;
+  card.style.display = 'block';
+  sessionStorage.setItem(inputId + '_name', file.name);
+  sessionStorage.setItem(inputId + '_size', sz);
+}
+
+function removeFile(inputId, cardId, iconId, subId, maxFiles){
+  document.getElementById(inputId).value = '';
+  document.getElementById(cardId).style.display = 'none';
+
+  // Restore arrow icon
+  document.getElementById(iconId).innerHTML = `
+    <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="17" y="24" width="8" height="12" rx="1" fill="#7bbccc"/>
+      <polygon points="21,4 7,22 15,22 15,36 27,36 27,22 35,22" fill="#7bbccc"/>
+      <rect x="7" y="34" width="28" height="3" rx="1.5" fill="#7bbccc"/>
+    </svg>`;
+
+  // Restore default subtext
+  const limitLine = maxFiles === 1
+    ? '<em>You may upload up to 1 file(s)</em>'
+    : `<em>You may upload up to ${maxFiles} file(s)</em>`;
+  const maxSz = maxFiles === 1 ? '3' : '2';
+  document.getElementById(subId).innerHTML =
+    `Supported formats: PDF<br>Maximum file size: ${maxSz}MB per file<br>
+    Embedded images and files will not be scanned for personal information. Consider masking any sensitive personal information before uploading, as it could be part of records accessible to the public.<br>
+    ${limitLine}`;
+
+  sessionStorage.removeItem(inputId + '_name');
+  sessionStorage.removeItem(inputId + '_size');
+}
+
+function saveDraft(){
+  sessionStorage.setItem('form_email', document.getElementById('f-email').value);
+  sessionStorage.setItem('form_desc',  document.getElementById('f-desc').value);
+  sessionStorage.setItem('form_date',  document.getElementById('f-date').value);
+  alert('Draft saved successfully.');
+}
+
+function goReview(){
+  sessionStorage.setItem('form_email', document.getElementById('f-email').value);
+  sessionStorage.setItem('form_desc',  document.getElementById('f-desc').value);
+  sessionStorage.setItem('form_date',  document.getElementById('f-date').value);
+  window.location.href = 'review.html';
+}
+</script>
+</body>
+</html>

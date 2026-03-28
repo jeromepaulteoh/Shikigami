@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BizFile+ - Review and Confirm</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --teal:#1e6070;--teal-light:#2c7a87;--orange:#c95200;
+  --bg:#f0ede8;--white:#fff;--gray-border:#ddd;--gray-text:#666;--dark:#2a2a2a;
+  --font:'IBM Plex Sans',Arial,sans-serif;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--dark);font-size:14px;}
+
+.site-hdr{background:#fff;padding:11px 50px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e5e5e5;}
+.logo-wrap{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-txt{font-size:21px;font-weight:700;font-style:italic;}
+.logo-txt .biz{color:var(--orange);}
+.logo-txt .plus{color:#333;font-style:normal;}
+.logo-sub{font-size:11px;color:#777;}
+.hdr-acts{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--teal);}
+.hdr-acts span{cursor:pointer;}
+
+.nav{background:var(--teal);display:flex;align-items:center;padding:0 50px;}
+.nav-it{padding:11px 13px;font-size:13px;color:#fff;cursor:pointer;white-space:nowrap;}
+.nav-it:hover{background:rgba(255,255,255,0.12);}
+.nav-sep-v{color:rgba(255,255,255,0.3);padding:0 4px;}
+
+.bc{padding:11px 50px;font-size:13px;color:#999;}
+.bc a{color:var(--teal-light);text-decoration:none;}
+.bc a:hover{text-decoration:underline;}
+.bc .arr{margin:0 6px;font-size:11px;}
+
+.pg-title{padding:6px 50px 18px;font-size:26px;font-weight:700;color:var(--dark);line-height:1.2;}
+
+/* STEPPER */
+.stepper-area{padding:0 50px 4px;}
+.stepper{display:flex;align-items:flex-start;max-width:560px;}
+.st-item{display:flex;flex-direction:column;align-items:center;flex:0 0 auto;}
+.st-circle{width:32px;height:32px;border-radius:50%;border:2px solid #ccc;background:#fff;color:#aaa;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:5px;}
+.st-item.active .st-circle{background:var(--teal);border-color:var(--teal);color:#fff;}
+.st-item.done .st-circle{background:var(--teal);border-color:var(--teal);color:#fff;}
+.st-lbl{font-size:11px;color:#999;text-align:center;max-width:90px;line-height:1.3;}
+.st-item.active .st-lbl{color:#333;font-weight:600;}
+.st-item.done .st-lbl{color:var(--teal);}
+.st-line{flex:1;height:1px;background:#ccc;margin-top:16px;min-width:50px;}
+.st-line.done{background:var(--teal);}
+
+.cont{padding:16px 50px 40px;}
+
+.card{background:#fff;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,0.07);margin-bottom:20px;}
+.card-body{padding:28px 32px 32px;}
+
+/* REVIEW STYLES */
+.rv-title{font-size:19px;font-weight:600;color:var(--dark);margin-bottom:5px;}
+.rv-sub{font-size:13px;color:#888;margin-bottom:20px;}
+.rv-sec{font-size:14.5px;font-weight:600;color:var(--dark);margin-top:18px;margin-bottom:10px;}
+.rv-hr{border:none;border-top:1px solid #eee;margin:0 0 15px;}
+.rv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding-bottom:18px;}
+.rv-grid.two{grid-template-columns:repeat(2,1fr);}
+.rv-lbl{font-size:11px;color:#aaa;margin-bottom:3px;}
+.rv-val{font-size:14px;color:#333;}
+.rv-link{color:var(--teal-light);text-decoration:underline;cursor:pointer;}
+
+/* DECLARATION */
+.decl-box{border:1.5px solid var(--teal);border-radius:6px;padding:18px;margin-top:18px;}
+.decl-inner{display:flex;gap:12px;}
+.decl-inner input[type="checkbox"]{margin-top:3px;width:16px;height:16px;cursor:pointer;accent-color:var(--teal);flex-shrink:0;}
+.decl-txt strong{font-size:14px;}
+.decl-txt ol{padding-left:17px;margin-top:7px;}
+.decl-txt ol li{font-size:12.5px;color:#555;margin-bottom:5px;line-height:1.5;}
+
+.f-actions{display:flex;justify-content:space-between;align-items:center;padding-top:18px;border-top:1px solid #eee;margin-top:8px;}
+.btn{padding:10px 22px;border-radius:25px;font-size:13.5px;cursor:pointer;border:1.5px solid transparent;font-family:inherit;font-weight:500;text-decoration:none;display:inline-block;}
+.btn-ol{background:#fff;border-color:var(--teal);color:var(--teal);}
+.btn-ol:hover{background:#f0f8fa;}
+.btn-pr{background:var(--teal);color:#fff;border-color:var(--teal);}
+.btn-pr:hover{background:#164d5c;}
+
+/* COMPLETE STYLES */
+.cmp-card{text-align:center;padding:55px 32px;}
+.cmp-icon{font-size:55px;margin-bottom:18px;}
+.cmp-title{font-size:23px;font-weight:700;color:var(--dark);margin-bottom:9px;}
+.cmp-sub{font-size:14px;color:#777;margin-bottom:26px;}
+.ref-box{background:#f0f8fa;border:1px solid #ccc;border-radius:6px;padding:13px 26px;display:inline-block;margin-bottom:24px;}
+.ref-lbl{font-size:11px;color:#aaa;margin-bottom:3px;}
+.ref-no{font-size:19px;font-weight:700;color:var(--teal);}
+.cmp-info{font-size:13px;color:#777;max-width:460px;margin:0 auto 26px;line-height:1.65;}
+
+/* VIEWS */
+.view{display:none;}
+.view.active{display:block;}
+
+.footer{background:#2a2a2a;color:#bbb;padding:28px 50px 14px;margin-top:35px;}
+.ft-main{display:flex;justify-content:center;align-items:flex-start;gap:65px;padding-bottom:18px;}
+.ft-acra .acra-logo{font-size:18px;font-weight:900;letter-spacing:2px;color:#aaa;border:2px solid #666;display:inline-block;padding:4px 9px;margin-bottom:4px;}
+.ft-acra .acra-name{font-size:10px;color:#888;max-width:130px;line-height:1.4;text-align:center;}
+.ft-lnks{display:flex;gap:45px;}
+.ft-col a{display:flex;align-items:center;gap:6px;color:#bbb;text-decoration:none;font-size:13px;margin-bottom:9px;cursor:pointer;}
+.ft-col a:hover{color:#fff;}
+.ft-bot{border-top:1px solid #444;padding-top:11px;display:flex;justify-content:space-between;font-size:11.5px;color:#777;}
+.ft-bot-lnks{display:flex;gap:18px;}
+.ft-bot-lnks a{color:#777;text-decoration:none;cursor:pointer;}
+
+.chat-widget{position:fixed;bottom:22px;right:22px;z-index:999;}
+.chat-bubble{background:#d35400;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,0.3);}
+.chat-tooltip{background:#fff;border:1px solid #eee;border-radius:8px;padding:8px 12px;font-size:12px;color:#333;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,0.12);white-space:nowrap;position:relative;}
+.chat-tooltip::after{content:'';position:absolute;bottom:-5px;right:16px;width:10px;height:10px;background:#fff;border-right:1px solid #eee;border-bottom:1px solid #eee;transform:rotate(45deg);}
+</style>
+</head>
+<body>
+
+<!-- ===== REVIEW (Step 2) ===== -->
+<div id="view-review" class="view active">
+
+  <div class="site-hdr">
+    <a class="logo-wrap" href="index.html">
+      <div class="logo-txt"><span class="biz">bizfile</span><span class="plus">+</span></div>
+      <div class="logo-sub">Making Singapore the best place for business</div>
+    </a>
+    <div class="hdr-acts">
+      <span>👤 Account ▾</span><span>✉</span><span>🛒</span>
+      <span style="color:#ddd;">|</span><span>→ Logout</span><span>🔍</span>
+    </div>
+  </div>
+
+  <div class="nav">
+    <span class="nav-it">Register ▾</span><span class="nav-it">Manage ▾</span>
+    <span class="nav-it">Annual filing ▾</span><span class="nav-it">Deregister ▾</span>
+    <span class="nav-it">Others ▾</span><span class="nav-sep-v">|</span>
+    <span class="nav-it">Buy information ▾</span><span class="nav-it">Subscribe APIs ▾</span>
+  </div>
+
+  <div class="bc">
+    <a href="index.html">Home</a>
+    <span class="arr">›</span>
+    <a href="intermediary.html">General lodgement</a>
+  </div>
+
+  <div class="pg-title">Update registered qualified<br>individual information</div>
+
+  <div class="stepper-area">
+    <div class="stepper">
+      <div class="st-item done">
+        <div class="st-circle">1</div>
+        <div class="st-lbl">Enter General lodgement details</div>
+      </div>
+      <div class="st-line done"></div>
+      <div class="st-item active">
+        <div class="st-circle">2</div>
+        <div class="st-lbl">Review and confirm</div>
+      </div>
+      <div class="st-line"></div>
+      <div class="st-item">
+        <div class="st-circle">3</div>
+        <div class="st-lbl">Complete</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cont">
+    <div class="card">
+      <div class="card-body">
+        <div class="rv-title">Review and confirm</div>
+        <div class="rv-sub">Please review the information below before submitting</div>
+
+        <div class="rv-sec">Entity information</div>
+        <hr class="rv-hr">
+        <div class="rv-grid">
+          <div><div class="rv-lbl">UEN</div><div class="rv-val">N/A</div></div>
+          <div><div class="rv-lbl">Entity name</div><div class="rv-val">N/A</div></div>
+          <div><div class="rv-lbl">Entity type</div><div class="rv-val">N/A</div></div>
+          <div><div class="rv-lbl">Company type</div><div class="rv-val">N/A</div></div>
+        </div>
+
+        <div class="rv-sec">General lodgement</div>
+        <hr class="rv-hr">
+        <div class="rv-grid">
+          <div><div class="rv-lbl">Date of lodgement</div><div class="rv-val">28 Mar 2026</div></div>
+          <div><div class="rv-lbl">Email address</div><div class="rv-val" id="rv-email">-</div></div>
+          <div><div class="rv-lbl">Description of lodgement</div><div class="rv-val" id="rv-desc">-</div></div>
+          <div><div class="rv-lbl">Date of document</div><div class="rv-val" id="rv-date">-</div></div>
+        </div>
+
+        <div class="rv-sec">Supporting document</div>
+        <hr class="rv-hr">
+        <div class="rv-grid two">
+          <div><div class="rv-lbl">Attach form</div><div id="rv-form-file" class="rv-val">N/A</div></div>
+          <div><div class="rv-lbl">Attach supporting document</div><div id="rv-supp-file" class="rv-val">N/A</div></div>
+        </div>
+
+        <div class="decl-box">
+          <div class="decl-inner">
+            <input type="checkbox" id="decl-chk">
+            <div class="decl-txt">
+              <strong>I, Lim Ming-Yang, Raphael, declare that:</strong>
+              <ol>
+                <li>The above information submitted is true and correct to the best of my knowledge and I am authorised to file this application/transaction.</li>
+                <li>I am aware that I may be liable to prosecution if I submit any false or misleading information in this application/transaction.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <div class="f-actions">
+          <a class="btn btn-ol" href="form.html">← Back</a>
+          <button class="btn btn-pr" id="submit-btn" onclick="doSubmit()">Submit →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="ft-main">
+      <div class="ft-acra"><div class="acra-logo">ACRA</div><div class="acra-name">Accounting and Corporate Regulatory Authority</div></div>
+      <div class="ft-lnks">
+        <div class="ft-col"><a>ℹ About Us</a><a>💬 Feedback</a></div>
+        <div class="ft-col"><a>📰 News Room</a><a>📞 Contact Us</a></div>
+        <div class="ft-col"><a>📖 Guides</a></div>
+      </div>
+    </div>
+    <div class="ft-bot">
+      <div class="ft-bot-lnks"><a>Report vulnerability</a><a>Privacy statement</a><a>Terms of use</a><a>Sitemap</a></div>
+      <div>© 2026 Government of Singapore &nbsp;|&nbsp; Last updated on 17 Mar 2026</div>
+    </div>
+  </div>
+  <div class="chat-widget"><div class="chat-tooltip">Click here to chat with me.</div><div class="chat-bubble">😊</div></div>
+</div>
+
+<!-- ===== COMPLETE (Step 3) ===== -->
+<div id="view-complete" class="view">
+
+  <div class="site-hdr">
+    <a class="logo-wrap" href="index.html">
+      <div class="logo-txt"><span class="biz">bizfile</span><span class="plus">+</span></div>
+      <div class="logo-sub">Making Singapore the best place for business</div>
+    </a>
+    <div class="hdr-acts">
+      <span>👤 Account ▾</span><span>✉</span><span>🛒</span>
+      <span style="color:#ddd;">|</span><span>→ Logout</span><span>🔍</span>
+    </div>
+  </div>
+
+  <div class="nav">
+    <span class="nav-it">Register ▾</span><span class="nav-it">Manage ▾</span>
+    <span class="nav-it">Annual filing ▾</span><span class="nav-it">Deregister ▾</span>
+    <span class="nav-it">Others ▾</span><span class="nav-sep-v">|</span>
+    <span class="nav-it">Buy information ▾</span><span class="nav-it">Subscribe APIs ▾</span>
+  </div>
+
+  <div class="bc">
+    <a href="index.html">Home</a>
+    <span class="arr">›</span>
+    <span>General lodgement</span>
+  </div>
+
+  <div class="pg-title">Update registered qualified<br>individual information</div>
+
+  <div class="stepper-area">
+    <div class="stepper">
+      <div class="st-item done">
+        <div class="st-circle">✓</div>
+        <div class="st-lbl">Enter General lodgement details</div>
+      </div>
+      <div class="st-line done"></div>
+      <div class="st-item done">
+        <div class="st-circle">✓</div>
+        <div class="st-lbl">Review and confirm</div>
+      </div>
+      <div class="st-line done"></div>
+      <div class="st-item active">
+        <div class="st-circle">3</div>
+        <div class="st-lbl">Complete</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cont">
+    <div class="card">
+      <div class="cmp-card">
+        <div class="cmp-icon">✅</div>
+        <div class="cmp-title">Submission Successful</div>
+        <div class="cmp-sub">Your general lodgement has been submitted successfully.</div>
+        <div class="ref-box">
+          <div class="ref-lbl">Reference number</div>
+          <div class="ref-no">GL-2026-0328-001</div>
+        </div>
+        <div class="cmp-info">
+          Our officers will review and process your transaction or application.
+          You will be notified if payment is required.
+          You may view the status of your application under 'My Transactions'.
+        </div>
+        <a class="btn btn-pr" href="index.html">Return to Home</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="ft-main">
+      <div class="ft-acra"><div class="acra-logo">ACRA</div><div class="acra-name">Accounting and Corporate Regulatory Authority</div></div>
+      <div class="ft-lnks">
+        <div class="ft-col"><a>ℹ About Us</a><a>💬 Feedback</a></div>
+        <div class="ft-col"><a>📰 News Room</a><a>📞 Contact Us</a></div>
+        <div class="ft-col"><a>📖 Guides</a></div>
+      </div>
+    </div>
+    <div class="ft-bot">
+      <div class="ft-bot-lnks"><a>Report vulnerability</a><a>Privacy statement</a><a>Terms of use</a><a>Sitemap</a></div>
+      <div>© 2026 Government of Singapore &nbsp;|&nbsp; Last updated on 17 Mar 2026</div>
+    </div>
+  </div>
+</div>
+
+<script>
+window.onload = function(){
+  // Populate review fields from sessionStorage
+  const email = sessionStorage.getItem('form_email') || '-';
+  const desc  = sessionStorage.getItem('form_desc')  || '-';
+  const date  = sessionStorage.getItem('form_date')  || '-';
+
+  document.getElementById('rv-email').textContent = email;
+  document.getElementById('rv-desc').textContent  = desc;
+  document.getElementById('rv-date').textContent  = date;
+
+  const formFile = sessionStorage.getItem('form-file-in_name');
+  const suppFile = sessionStorage.getItem('supp-file-in_name');
+
+  const fEl = document.getElementById('rv-form-file');
+  fEl.innerHTML = formFile ? `<span class="rv-link">${formFile}</span>` : 'N/A';
+
+  const sEl = document.getElementById('rv-supp-file');
+  sEl.innerHTML = suppFile ? `<span class="rv-link">${suppFile}</span>` : 'N/A';
+};
+
+function doSubmit(){
+  if(!document.getElementById('decl-chk').checked){
+    alert('Please check the declaration box before submitting.');
+    return;
+  }
+  // Clear session storage after successful submit
+  ['form_email','form_desc','form_date','form-file-in_name','supp-file-in_name','lodgement_type'].forEach(k => sessionStorage.removeItem(k));
+
+  // Show complete view
+  document.getElementById('view-review').classList.remove('active');
+  document.getElementById('view-complete').classList.add('active');
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
